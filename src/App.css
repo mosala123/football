@@ -1,0 +1,302 @@
+/* ===================================================
+   App.css — Fixed Layout
+   المشكلة كانت: overflow:hidden + height:100vh
+   بيخلي الـ footer يطغى على المحتوى
+   =================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* ❌ أُزيل overflow:hidden — كان يخفي المحتوى ويغطيه بالـ footer */
+}
+
+#root {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Wrapper ── */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;   /* بدل height:100vh — يسمح بالمد للأسفل */
+    width: 100%;
+}
+
+/* ── Navbar: لا يتحرك مع الـ scroll ── */
+nav {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* ── Main: يأخذ كل المساحة المتاحة بين الـ nav والـ footer ── */
+.main-content {
+    flex: 1 0 auto;      /* flex-grow:1  flex-shrink:0 — ينمو ولا ينكمش */
+    width: 100%;
+    overflow-x: hidden;
+    /* ❌ أُزيل height:0 و overflow-y:auto — كان يخلي الـ scroll داخل div بدل الـ window */
+}
+
+/* ── Footer: لا يتمدد ولا يغطي المحتوى ── */
+footer {
+    flex-shrink: 0;      /* لا ينكمش أبداً */
+    width: 100%;
+    position: relative;
+    z-index: 100;
+    /* ❌ أُزيل margin-top:auto — مش محتاجه مع flex-grow على main */
+}
+
+/* ── Page inner content ── */
+.page-content {
+    padding: 0;
+    margin: 0;
+}
+
+/* ══════════════════════════════
+   Loading Spinner
+══════════════════════════════ */
+.loading-spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    width: 100%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(64, 224, 208, 0.2);
+    border-top: 4px solid #40e0d0;
+    border-right: 4px solid #40e0d0;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+.loading-text {
+    color: #2d6a4f;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    opacity: 0.8;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════
+   Error Boundary
+══════════════════════════════ */
+.error-boundary {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.error-content {
+    text-align: center;
+    max-width: 480px;
+}
+
+.error-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.error-content p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+/* ══════════════════════════════
+   Offline Banner
+══════════════════════════════ */
+.offline-message {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 2rem;
+}
+
+.offline-content {
+    text-align: center;
+    max-width: 400px;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+}
+
+.offline-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.offline-content h2 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+}
+
+.offline-content p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+/* ══════════════════════════════
+   404 Not Found
+══════════════════════════════ */
+.not-found {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.not-found-content {
+    text-align: center;
+    max-width: 440px;
+}
+
+.not-found-icon {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes bounceIn {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.not-found-content h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #1a472a;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.not-found-content h2 {
+    font-size: 1.5rem;
+    color: #2d6a4f;
+    margin-bottom: 1rem;
+}
+
+.not-found-content p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* ══════════════════════════════
+   Shared Button Styles
+══════════════════════════════ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #40e0d0, #2d8a6a);
+    color: white;
+    box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(64, 224, 208, 0.4);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* ══════════════════════════════
+   Custom Scrollbar (window-level)
+══════════════════════════════ */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #40e0d0, #2d8a6a);
+    border-radius: 10px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5eead4, #40b69e);
+}
+
+/* ══════════════════════════════
+   Responsive
+══════════════════════════════ */
+@media (max-width: 768px) {
+    .not-found-content h1 {
+        font-size: 4rem;
+    }
+}
+
+/* ══════════════════════════════
+   Reduced Motion
+══════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
